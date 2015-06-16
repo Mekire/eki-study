@@ -7,16 +7,7 @@ Functionality mirrors that which was demonstrated in the iPython notebook.
 from __future__ import print_function
 import scipy as sc
 import burstAnalysis as burst
-
-
-KINDS = ("EKI", "WT")
-
-MEASURES = ("burstDur", "cycleDur", "dutyCycle", "qI")
-
-MEASURES_FULL = {"burstDur"  : "Burst Duration",
-                 "cycleDur"  : "Cycle Duration",
-                 "dutyCycle" : "Duty Cycle",
-                 "qI"        : "Quiescence Interval"}
+from burstAnalysis import KINDS, MEASURES, MEASURES_FULL
 
 
 def print_data(data):
@@ -124,3 +115,12 @@ def print_quants_quartiles(quartiles, min_quants, max_quants):
     for k in KINDS:
         filled = template.format(min_quants[k], max_quants[k], *quartiles[k])
         print("\n".join([k, fields, filled]), end="\n\n")
+
+
+def quant_statistical_comparisons(quants, start=0.01, stop=1.0, step=0.01):
+    """
+    Wilcoxon rank-sum test to determine whether the two samples are
+    statistically different.
+    """
+    pick_quants = {k : quants[k](sc.arange(start,stop,step)) for k in KINDS}
+    return sc.stats.ranksums(pick_quants['WT'], pick_quants['EKI'])
