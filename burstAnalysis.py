@@ -218,10 +218,8 @@ def pdfComparison(csvFiles, label1='WT', label2='EKI', maxRF=0.33, alpha1=1,
     ax = []
     f0 = gr.figure(figsize=(13,13))
     gr.ioff()
-    ##for n in range(rows*cols):
-        ##ax.append(f0.add_subplot(rows,cols,n+1))
-    for i,attr in enumerate(MEASURES):
-        plot = f0.add_subplot(rows, cols, i+1)
+    for i,attr in enumerate(MEASURES, start=1):
+        plot = f0.add_subplot(rows, cols, i)
         measure = PLOT_MEASURE_INFO[attr]
         binw = measure["bin"]
         shift = binw*(1-skinfactor)/2.0
